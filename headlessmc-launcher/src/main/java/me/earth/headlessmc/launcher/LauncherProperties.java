@@ -63,4 +63,5 @@ public interface LauncherProperties extends HmcProperties {
 
     Property<Boolean> SET_LIBRARY_DIR = bool("hmc.set.library.dir");
 
+    Property<String> LAUNCH_VERSION = string("hhmc.launchVersion");
 }

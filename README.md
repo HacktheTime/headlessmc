@@ -1,3 +1,28 @@
+## This is a modified version by HacktheTime!
+
+This is a modification to auto launch a client. I personally use it as a systemd service and bridge bot on hypixel.
+
+How to set it up:
+run the jar once
+(this will create a config in HeadlessMC/config.properties)
+execute `download (desired mc version)`
+(optional) execute `fabric`/`forge` (desired mc version)
+execute `versions`
+copy the name of the version you want to launch with autostart (if you want to if not set it will not auto launch)
+put the following arguments in the config
+```
+hmc.java.versions=/path/to/java/executable/bin/java
+hmc.store.accounts=true
+hmc.invert.lwjgl.flag=true
+hmc.email="yourmicrosoftaccountemail@provider.domain"
+hmc.password="yourpassword"
+hhmc.launchVersion="yourautolaunchversionhere"
+hmc.gameargs=--quickPlayMultiplayer mc.hypixel.net
+```
+yes it is hhmc.launchVersion and not hmc.launchVersion because my modification thats why extra h
+
+when restarting the jar you should now auto start for everything and go on hypixel automatically
+
 # HeadlessMc
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/6a86b3e62d3b47909de670b09737f8fd)](https://app.codacy.com/gh/3arthqu4ke/headlessmc/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![GitHub All Releases](https://img.shields.io/github/downloads/3arthqu4ke/HeadlessMc/total.svg)](https://github.com/3arthqu4ke/HeadlessMc/releases)

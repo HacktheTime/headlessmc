@@ -4,12 +4,11 @@ import lombok.CustomLog;
 import lombok.experimental.UtilityClass;
 import lombok.val;
 import me.earth.headlessmc.HeadlessMcImpl;
+import me.earth.headlessmc.api.command.CommandException;
 import me.earth.headlessmc.command.line.CommandLineImpl;
 import me.earth.headlessmc.config.HmcProperties;
-import me.earth.headlessmc.launcher.auth.AccountManager;
-import me.earth.headlessmc.launcher.auth.AccountStore;
-import me.earth.headlessmc.launcher.auth.AccountValidator;
-import me.earth.headlessmc.launcher.auth.OfflineChecker;
+import me.earth.headlessmc.launcher.auth.*;
+import me.earth.headlessmc.launcher.command.LaunchCommand;
 import me.earth.headlessmc.launcher.command.LaunchContext;
 import me.earth.headlessmc.launcher.files.ConfigService;
 import me.earth.headlessmc.launcher.files.FileManager;
@@ -26,12 +25,14 @@ import me.earth.headlessmc.logging.LoggingHandler;
 import me.earth.headlessmc.logging.SimpleLog;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @CustomLog
 @UtilityClass
 public final class Main {
     public static void main(String[] args) {
         Throwable throwable = null;
+        args=new String[]{"--command \"launch fabric-loader-0.15.11-1.20.4\""};
         try {
             runHeadlessMc(args);
         } catch (Throwable t) {
@@ -75,10 +76,15 @@ public final class Main {
         val validator = new AccountValidator();
         val accountStore = new AccountStore(files, configs);
         val accounts = new AccountManager(accountStore, validator, new OfflineChecker(configs));
-
         val launcher = new Launcher(hmc, versions, mcFiles, files,
                                     new ProcessFactory(mcFiles, configs, os), configs,
                                     javas, accounts, validator);
+        try {
+            String autoLaunchVersion = configs.getConfig().get(LauncherProperties.LAUNCH_VERSION);
+            if (autoLaunchVersion!=null) new LaunchCommand(launcher).execute("launch",autoLaunchVersion.replace("\"",""));
+        } catch (CommandException e) {
+            System.out.println("Auto launch failed");
+        }
         LauncherApi.setLauncher(launcher);
         deleteOldFiles(launcher);
         versions.refresh();
