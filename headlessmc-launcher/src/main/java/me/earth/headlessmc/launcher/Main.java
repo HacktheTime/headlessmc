@@ -32,7 +32,6 @@ import java.util.Optional;
 public final class Main {
     public static void main(String[] args) {
         Throwable throwable = null;
-        args=new String[]{"--command \"launch fabric-loader-0.15.11-1.20.4\""};
         try {
             runHeadlessMc(args);
         } catch (Throwable t) {
@@ -64,7 +63,6 @@ public final class Main {
         val configs = Service.refresh(new ConfigService(files));
         LogLevelUtil.trySetLevel(
             configs.getConfig().get(HmcProperties.LOGLEVEL, "INFO"));
-
         val in = new CommandLineImpl();
         val hmc = new HeadlessMcImpl(new SimpleLog(), configs, in);
 
@@ -89,7 +87,6 @@ public final class Main {
         deleteOldFiles(launcher);
         versions.refresh();
         hmc.setCommandContext(new LaunchContext(launcher));
-
         if (!QuickExitCliHandler.checkQuickExit(launcher, in, args)) {
             log.info(String.format("Detected: %s", os));
             log.info(String.format("Minecraft Dir: %s", mcFiles.getBase()));
