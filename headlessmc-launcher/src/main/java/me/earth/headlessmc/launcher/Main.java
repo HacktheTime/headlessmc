@@ -79,7 +79,7 @@ public final class Main {
                                     javas, accounts, validator);
         try {
             String autoLaunchVersion = configs.getConfig().get(LauncherProperties.LAUNCH_VERSION);
-            if (autoLaunchVersion!=null) new LaunchCommand(launcher).execute("launch",autoLaunchVersion.replace("\"",""));
+            if (autoLaunchVersion!=null) new LaunchCommand(launcher).execute("launch",autoLaunchVersion.replace("\"",""),"quit");
         } catch (CommandException e) {
             System.out.println("Auto launch failed");
         }
