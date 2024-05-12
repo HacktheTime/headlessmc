@@ -23,6 +23,36 @@ yes it is hhmc.launchVersion and not hmc.launchVersion because my modification t
 
 when restarting the jar you should now auto start for everything and go on hypixel automatically
 
+### Keep in mind that I recommend you to should probably use a Minecraft Mod to do the Stuff you want to do.
+
+If you want to integrate it as a systemd service here is a example of how you can do so.
+
+If you also want to manage the Serivce though something else you can edit the visudo file by typing visudo as root in a terminal.
+(Example line for user user) `user ALL=(ALL) NOPASSWD: /bin/systemctl start (servicename)`
+You will need to add all commands specifically and be warned do not use regex etc sice if it is not correct its a **GIANT** security risk! allowlist all commands individually and never run java as root! Imagine java debugger with root privileges means you can execute all commands!
+
+Service file location `/etc/systemd/system/yourname.service`
+content:
+```
+[Unit]
+Description=Your description
+After=network.target
+
+[Service]
+Type=simple
+User=(put user here. i recommend having a normal user without root priviledges here. you can use different users for safety for different bots so they cant read from each other.)
+TimeoutStopSec=10
+WorkingDirectory=/home/user
+ExecStart=bash -c "java -agentlib:jdwp=transport=dt_socket,quiet=n,server=y,suspend=n,address=127.0.0.1:(yourdebugporthere) -Duser.dir=/home/user -jar /path/to/jar" &
+ExecStop=/bin/bash -c 'echo "Shutdown: Service Shutdown" | nc localhost 7000'
+Restart=always
+RestartSec=10
+SuccessExitStatus=0
+
+[Install]
+WantedBy=multi-user.target
+```
+
 # HeadlessMc
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/6a86b3e62d3b47909de670b09737f8fd)](https://app.codacy.com/gh/3arthqu4ke/headlessmc/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![GitHub All Releases](https://img.shields.io/github/downloads/3arthqu4ke/HeadlessMc/total.svg)](https://github.com/3arthqu4ke/HeadlessMc/releases)
